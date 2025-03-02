@@ -1,0 +1,88 @@
+/* General Body Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('bg4.jpg'); /* Background image */
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding-top: 70px; /* Ensure content is not hidden under the fixed navbar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Navbar Styling */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 15px 20px;
+    background-color: #343a40; /* Dark background */
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.btn-danger {
+    font-size: 1rem;
+}
+
+/* Box Container */
+.box-container {
+    width: 400px;
+    padding: 30px;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Notification Alert */
+.notification {
+    display: none;
+    padding: 12px;
+    background-color: #dc3545;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Table Styling */
+.table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: #343a40;
+    color: white;
+}
+
+h2 {
+    color: #343a40;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+.btn-custom {
+    width: 100%;
+    margin-top: 10px; 
+}
+
+/* Ensure container does not get hidden under navbar */
+.container {
+    max-width: 800px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    margin-top: 20px; /* Adjusted for fixed navbar */
+}

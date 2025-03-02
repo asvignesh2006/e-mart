@@ -1,0 +1,129 @@
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-image: url('/static/bg3.jpg'); /* Ensure the path is correct */
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+/* Centered Heading */
+h2 {
+    text-align: center;
+    color: #333; /* Dark gray text color */
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+/* Table Header Styling */
+th {
+    background: #007bff; /* Blue background for headers */
+    color: white; /* White text for headers */
+    padding: 10px;
+    border: 1px solid #ddd; /* Light gray border */
+    text-align: center;
+}
+
+/* Table Data Cells Styling */
+td, th {
+    position: relative; /* Required for pseudo-elements */
+    padding: 10px;
+    border: 1px solid #ddd; /* Light gray border */
+    text-align: center;
+    color: #000; /* Black text for better visibility */
+}
+
+/* Blur the second column (e.g., "Product Name") */
+td:nth-child(2)::before, th:nth-child(2)::before {
+    content: ''; /* Required for pseudo-elements */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+    backdrop-filter: blur(5px); /* Blur the background */
+    z-index: -1; /* Place the pseudo-element behind the text */
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Input and Button Styling */
+input, button {
+    padding: 10px;
+    margin: 5px;
+    border: none; /* No border for buttons */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Button Styling */
+button {
+    background: #28a745; /* Green background for buttons */
+    color: white; /* White text for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Hover Effect for Buttons */
+button:hover {
+    background: #218838; /* Darker green on hover */
+}
+
+/* Navbar Styling */
+.navbar {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #343a40; /* Dark background for navbar */
+}
+
+.navbar-brand {
+    color: white; /* White text for brand name */
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Logout Button Styling */
+.btn-danger {
+    background-color: #dc3545; /* Red background for logout button */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+/* Container Styling */
+.container {
+    max-width: 800px;
+    margin: 0 auto; /* Center the container */
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+/* Alert Box Styling */
+.alert-info {
+    background-color: #d1ecf1; /* Light blue background */
+    color: #0c5460; /* Dark blue text */
+    border: 1px solid #bee5eb; /* Light blue border */
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="./static/inventory.css">
+</head>
+<body>
+    <h2>Inventory Management</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="inventory-body">
+            <tr>
+                <td>Sample Item</td>
+                <td>10</td>
+                <td>$5.00</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <form id="inventory-form">
+        <input type="text" id="item-name" placeholder="Item Name" required>
+        <input type="number" id="quantity" placeholder="Quantity" required>
+        <input type="number" id="price" placeholder="Price" required>
+        <button type="submit">Add Item</button>
+    </form>
+    
+    <script>
+        document.getElementById('inventory-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let itemName = document.getElementById('item-name').value;
+            let quantity = document.getElementById('quantity').value;
+            let price = document.getElementById('price').value;
+            
+            let tableBody = document.getElementById('inventory-body');
+            let newRow = document.createElement('tr');
+            newRow.innerHTML = `<td>${itemName}</td><td>${quantity}</td><td>$${price}</td>`;
+            
+            tableBody.appendChild(newRow);
+            
+            document.getElementById('inventory-form').reset();
+        });
+    </script>
+</body>
+</html>

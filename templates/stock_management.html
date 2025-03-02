@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="./static/stockmanagement.css">
+</head>
+<body>
+
+    <!-- Navbar (E-Mart on the left, Logout on the right) -->
+    <nav class="navbar navbar-dark bg-dark px-3">
+        <div class="container-fluid d-flex justify-content-between">
+            <a class="navbar-brand" href="#">E-Mart</a>
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="text-center">Stock Management</h2>
+
+        <!-- Low Stock Notification -->
+        <div id="notification" class="alert alert-danger text-center" style="display: none;">
+            ⚠️ Some products have low stock! Please restock.
+        </div>
+
+        <!-- Product Table -->
+        <table class="table table-bordered text-center mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>S.No</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price ($)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="stockTable">
+                <!-- Products will be dynamically added here -->
+            </tbody>
+        </table>
+
+        <button class="btn btn-success w-100" onclick="addProduct()">➕ Add New Product</button>
+    </div>
+
+    <script>
+        let products = JSON.parse(localStorage.getItem("products")) || [
+            { id: 1, name: "Product A", quantity: 50, price: 10 },
+            { id: 2, name: "Product B", quantity: 30, price: 20 },
+            { id: 3, name: "Product C", quantity: 15, price: 25 }
+        ];
+    
+        let sales = JSON.parse(localStorage.getItem("sales")) || [];
+    
+        function renderTable() {
+            let tableBody = document.getElementById("stockTable");
+            tableBody.innerHTML = "";
+    
+            products.forEach((product, index) => {
+                let row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${product.name}</td>
+                        <td>${product.quantity}</td>
+                        <td>$${product.price}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" onclick="updateProduct(${index})">✏️ Update</button>
+                            <button class="btn btn-danger btn-sm" onclick="sellProduct(${index})">🛒 Sell</button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+    
+            checkStock();
+            localStorage.setItem("products", JSON.stringify(products));
+        }
+    
+        function sellProduct(index) {
+            Swal.fire({
+                title: `Sell ${products[index].name}`,
+                input: 'number',
+                inputAttributes: { min: 1, step: 1 },
+                showCancelButton: true,
+                confirmButtonText: 'Sell'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let sellQty = parseInt(result.value);
+                    if (sellQty > 0 && sellQty <= products[index].quantity) {
+                        let sale = {
+                            name: products[index].name,
+                            quantity: sellQty,
+                            price: products[index].price,
+                            total: sellQty * products[index].price,
+                            date: new Date().toLocaleString()
+                        };
+    
+                        sales.push(sale);
+                        localStorage.setItem("sales", JSON.stringify(sales));
+    
+                        products[index].quantity -= sellQty;
+                        renderTable();
+    
+                        Swal.fire("Sold!", `Sold ${sellQty} items of ${products[index].name}.`, "success");
+                    } else {
+                        Swal.fire("Error", "Invalid quantity or not enough stock.", "error");
+                    }
+                }
+            });
+        }
+    
+        function checkStock() {
+            let lowStock = products.some(product => product.quantity < 20);
+            document.getElementById("notification").style.display = lowStock ? "block" : "none";
+        }
+    
+        function logout() {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You will be logged out.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, logout",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "login.html"; // Redirect to login page
+                }
+            });
+        }
+    
+        renderTable();
+        function updateProduct(index) {
+            Swal.fire({
+                title: "Update Stock",
+                html:
+                    `<input id="productQuantity" type="number" class="swal2-input" placeholder="New Quantity" value="${products[index].quantity}">`,
+                showCancelButton: true,
+                confirmButtonText: "Update"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let newQuantity = parseInt(document.getElementById("productQuantity").value);
+        
+                    if (newQuantity >= 0) {
+                        products[index].quantity = newQuantity;
+                        renderTable();
+                        Swal.fire("Updated!", "Stock quantity has been updated.", "success");
+                    } else {
+                        Swal.fire("Error", "Invalid stock quantity.", "error");
+                    }
+                }
+            });
+        }
+        function updateProduct(index) {
+            Swal.fire({
+                title: "Update Product Details",
+                html:
+                    `<input id="productName" type="text" class="swal2-input" placeholder="Product Name" value="${products[index].name}">
+                    <input id="productQuantity" type="number" class="swal2-input" placeholder="Stock Quantity" value="${products[index].quantity}">
+                    <input id="productPrice" type="number" class="swal2-input" placeholder="Price ($)" value="${products[index].price}">`,
+                showCancelButton: true,
+                confirmButtonText: "Update",
+                preConfirm: () => {
+                    return {
+                        name: document.getElementById("productName").value.trim(),
+                        quantity: parseInt(document.getElementById("productQuantity").value),
+                        price: parseFloat(document.getElementById("productPrice").value)
+                    };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let { name, quantity, price } = result.value;
+        
+                    if (name && quantity >= 0 && price >= 0) {
+                        products[index].name = name;
+                        products[index].quantity = quantity;
+                        products[index].price = price;
+        
+                        renderTable();
+                        Swal.fire("Updated!", "Product details have been updated.", "success");
+                    } else {
+                        Swal.fire("Error", "Invalid input. Please enter valid values.", "error");
+                    }
+                }
+            });
+        }
+        function updateProduct(index) {
+            Swal.fire({
+                title: "Update Product Details",
+                html:
+                    `<input id="productName" type="text" class="swal2-input" placeholder="Product Name" value="${products[index].name}">
+                    <input id="productQuantity" type="number" class="swal2-input" placeholder="Stock Quantity" value="${products[index].quantity}">
+                    <input id="productPrice" type="number" class="swal2-input" placeholder="Price ($)" value="${products[index].price}">`,
+                showCancelButton: true,
+                confirmButtonText: "Update",
+                preConfirm: () => {
+                    return {
+                        name: document.getElementById("productName").value.trim(),
+                        quantity: parseInt(document.getElementById("productQuantity").value),
+                        price: parseFloat(document.getElementById("productPrice").value)
+                    };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let { name, quantity, price } = result.value;
+        
+                    if (name && quantity >= 0 && price >= 0) {
+                        products[index].name = name;
+                        products[index].quantity = quantity;
+                        products[index].price = price;
+        
+                        renderTable();
+                        Swal.fire("Updated!", "Product details have been updated.", "success");
+                    } else {
+                        Swal.fire("Error", "Invalid input. Please enter valid values.", "error");
+                    }
+                }
+            });
+        }
+        
+        
+    </script>
+    
+</body>
+</html>

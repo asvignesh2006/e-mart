@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Mart Dashboard</title>
+    <link rel="stylesheet" href="./static/dashboard.css"> <!-- Using your given CSS -->
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>E-Mart</h1>
+        <a class="logout" href="{{ url_for('logout') }}" onclick="logout()">Logout</a>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <div class="main-content">
+        <div class="box" onclick="window.location.href='{{ url_for('supplier_management') }}'">
+            Supplier Management
+        </div>
+        <div class="box" onclick="window.location.href='{{ url_for('sales_interface') }}'">
+            Sales Interface
+        </div>
+        <div class="box" onclick="window.location.href='{{ url_for('stock_management') }}'">
+            Stock Management
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        Created by Vicky Group Pvt Ltd
+    </footer>
+
+    <script>
+        // Function for handling logout
+        function logout() {
+            alert('Logging out...');
+            window.location.href = '{{ url_for("login") }}';
+        }
+    </script>
+</body>
+</html>

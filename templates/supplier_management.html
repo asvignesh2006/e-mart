@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Management</title>
+    <link rel="stylesheet" href="./static/supplier.css">
+</head>
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            background-image: url('./static/bg4.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+        .title-container {
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        .title-container h2 {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        form {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
+
+    <div class="title-container">
+        <h2>Supplier Management</h2>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Supplier Name</th>
+                <th>Contact</th>
+                <th>Product Supplied</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody id="supplier-body">
+        </tbody>
+    </table>
+    
+    <form id="supplier-form">
+        <input type="text" id="supplier-name" placeholder="Supplier Name" required>
+        <input type="text" id="contact" placeholder="Contact" required>
+        <input type="text" id="product-supplied" placeholder="Product Supplied" required>
+        <input type="text" id="location" placeholder="Location" required>
+        <button type="submit">Add Supplier</button>
+    </form>
+    
+    <script>
+        let suppliers = [
+            { name: "Rajesh", contact: getRandomContact(), product: "Milk", location: "Perambur" },
+            { name: "Poovarasan", contact: getRandomContact(), product: "Chocolate", location: "Dharmapuri" },
+            { name: "Shiva", contact: getRandomContact(), product: "Bread", location: "Vadapalani" },
+            { name: "Sathish", contact: getRandomContact(), product: "Groceries", location: "Palur" },
+            { name: "Sathya", contact: getRandomContact(), product: "Cookies", location: "Tambaram" }
+        ];
+
+        function getRandomContact() {
+            return "+91 " + Math.floor(9000000000 + Math.random() * 1000000000);
+        }
+
+        function renderTable() {
+            let tableBody = document.getElementById("supplier-body");
+            tableBody.innerHTML = "";
+            
+            suppliers.forEach(supplier => {
+                let newRow = document.createElement('tr');
+                newRow.innerHTML = `<td>${supplier.name}</td><td>${supplier.contact}</td><td>${supplier.product}</td><td>${supplier.location}</td>`;
+                tableBody.appendChild(newRow);
+            });
+        }
+
+        document.getElementById('supplier-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let supplierName = document.getElementById('supplier-name').value;
+            let contact = document.getElementById('contact').value;
+            let productSupplied = document.getElementById('product-supplied').value;
+            let location = document.getElementById('location').value;
+            
+            suppliers.push({ name: supplierName, contact, product: productSupplied, location });
+            renderTable();
+            
+            document.getElementById('supplier-form').reset();
+        });
+
+        renderTable();
+    </script>
+</body>
+</html>
